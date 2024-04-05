@@ -3,7 +3,7 @@ A Simple version of *Snake Game*
 
 May not be recieved any future update. Its underlaying logic is not efficient for training.
 
-The next Snake Game will be based on Numpy / Cumpy.
+- The next Snake Game will be based on Numpy / Cumpy.
 
 - **Merely for fun**
 
