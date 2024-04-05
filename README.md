@@ -1,9 +1,11 @@
 # Snake-Game
-A Simple version of Snake Game
+A Simple version of *Snake Game*
 
-May not be recieved any update. Its underlaying logic is not suitable for ai training.
+May not be recieved any future update. Its underlaying logic is not efficient for training.
 
-**Merely for fun**
+The next one will based on Numpy.
+
+- **Merely for fun**
 
 ## Prerequisites
 - Pygame
@@ -12,3 +14,4 @@ May not be recieved any update. Its underlaying logic is not suitable for ai tra
 - [ ] Write comments
 
 ## Acknowledgment
+- Nokia (Maybe)
