@@ -2,11 +2,12 @@ import pygame
 import random
 
 
-WIDTH, HEIGHT = 800, 600
-GRID_SIZE = 40
+WIDTH, HEIGHT = 600, 400
+GRID_SIZE = 50
 COLS = HEIGHT // GRID_SIZE
 ROWS = WIDTH // GRID_SIZE
 FPS = 8
+BOARDER = True
 
 BG = (255, 255, 255)
 GRID = (0, 0, 0)
@@ -16,10 +17,12 @@ SNAKE = (0, 255, 0)
 
 class Apple:
     def __init__(self):
-        self.position = [random.randint(0, ROWS-1), random.randint(0, COLS-1)]
+        self.position = [random.randint(0, ROWS), random.randint(0, COLS)]
+        print(self.position)
         
-    def update(self):
-        self.position = [random.randint(0, ROWS-1), random.randint(0, COLS-1)]
+    def update(self, empty):
+        if empty != []:
+            self.position = random.choice(empty)
     
     def draw(self, surface):
         r = pygame.Rect(
@@ -47,7 +50,9 @@ class Queue:
         self.rear = new_node
     
     def dequeue(self):
+        front_data = self.front.data
         self.front = self.front.next
+        return front_data
     
     def search(self, data):
         current = self.front
@@ -62,14 +67,23 @@ class Snake:
     def __init__(self, apple):
         self.apple = apple
         
-        self.length = 1
-        self.positions = Queue([ROWS // 2 - 1, COLS // 2 - 1])
-        self.direction = random.choice([[0, -1], [0, 1], [-1, 0], [1, 0]])
+        self.length = None
+        self.positions = None
+        self.direction = []
+        self.empty = []
+        
+        self.reset()
     
     def reset(self):
         self.length = 1
-        self.positions = Queue([ROWS // 2 - 1, COLS // 2 - 1])
+        self.positions = Queue([ROWS // 2, COLS // 2])
         self.direction = random.choice([[0, -1], [0, 1], [-1, 0], [1, 0]])
+        
+        self.empty = []
+        for i in range(ROWS):
+            for j in range(COLS):
+                self.empty.append([i, j])
+        self.empty.remove([ROWS // 2, COLS // 2])
     
     def turn(self, point):
         if [point[0] * -1, point[1] * -1] != self.direction:
@@ -77,20 +91,29 @@ class Snake:
     
     def move(self):
         current = self.positions.rear
-        new = [
-            (current.data[0] + self.direction[0]) % ROWS,
-            (current.data[1] + self.direction[1]) % COLS
-        ]
-        
+        new = [current.data[0] + self.direction[0],
+               current.data[1] + self.direction[1]]
+
+        if BOARDER:
+            if new[0] < 0 or new[0] >= ROWS or new[1] < 0 or new[1] >= COLS:
+                self.gameover()
+                return
+        else:
+            new[0] %= ROWS
+            new[1] %= COLS
+
         if self.positions.search(new):
             self.gameover()
         else:
             self.positions.enqueue(new)
+            self.empty.remove(new)
+            
             if new == self.apple.position:
                 self.length += 1
-                self.apple.update()
+                self.apple.update(self.empty)
             else:
-                self.positions.dequeue()
+                tail = self.positions.dequeue()
+                self.empty.append(tail)
     
     def gameover(self):
         self.reset()
