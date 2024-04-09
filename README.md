@@ -10,9 +10,6 @@ May not be recieved any future update, because its underlaying logic is not effi
 ## Prerequisites
 - Pygame
 
-## Bugs
-- Apple can spawn on Snake
-
 ## To-Do
 - [ ] Write comments
 
