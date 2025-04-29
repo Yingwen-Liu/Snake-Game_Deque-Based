@@ -1,5 +1,5 @@
-import pygame
 import random
+import pygame
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -11,6 +11,7 @@ class Apple:
         self.position = []
 
     def reset(self, empty):
+        # Reset apple positions, avoiding the snake's grid
         self.position = random.sample(empty, self.num)
 
     def update(self, empty, head):
@@ -36,7 +37,7 @@ class Deque:
 
     def append(self, value):
         new_node = Node(value)
-        if self.tail is None:  # Empty deque
+        if self.tail is None:
             self.head = self.tail = new_node
         else:
             self.tail.next = new_node
@@ -45,7 +46,7 @@ class Deque:
 
     def appendleft(self, value):
         new_node = Node(value)
-        if self.head is None:  # Empty deque
+        if self.head is None:
             self.head = self.tail = new_node
         else:
             self.head.prev = new_node
